@@ -135,8 +135,9 @@ spec:
           key: node-role.kubernetes.io/master
       nodeSelector:
         kubernetes.io/role: master
+      dnsPolicy: Default
       containers:
-        - image: k8s.gcr.io/cluster-autoscaler:v1.12.3
+        - image: k8s.gcr.io/cluster-autoscaler:v1.13.4
           name: cluster-autoscaler
           resources:
             limits:
@@ -151,7 +152,7 @@ spec:
             - --stderrthreshold=info
             - --cloud-provider=aws
             - --skip-nodes-with-local-storage=false
-            - --nodes={{ node_asg_min }}:{{ node_asg_max }}:{{ name }}
+            - --nodes=2:5:dax-ASG
           volumeMounts:
             - name: ssl-certs
               mountPath: /etc/ssl/certs/ca-certificates.crt
